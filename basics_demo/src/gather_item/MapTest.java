@@ -11,10 +11,10 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 public class MapTest {
     public static void main(String[] args) {
-        // HashMapDemo();
-        // LinkedHashMapDemo();
-        // HashtableDemo();
-        // TreeMapDemo();
+        HashMapDemo();
+        LinkedHashMapDemo();
+        HashtableDemo();
+        TreeMapDemo();
         ConcurrentHashMapDemo();
     }
 
