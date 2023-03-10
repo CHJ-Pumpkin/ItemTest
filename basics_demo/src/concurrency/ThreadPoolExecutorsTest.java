@@ -19,6 +19,8 @@ public class ThreadPoolExecutorsTest {
     public static void main(String[] args) throws InterruptedException {
         ThreadPoolExecutorsTest threadPoolExecutorsTest = new ThreadPoolExecutorsTest();
         threadPoolExecutorsTest.ThreadPoolExecutorDemo();
+        // 返回可用处理器的Java虚拟机的数量
+        System.out.println("Runtime.getRuntime().availableProcessors() = " + Runtime.getRuntime().availableProcessors());
     }
 
     private void ThreadPoolExecutorDemo() throws InterruptedException {
@@ -30,14 +32,15 @@ public class ThreadPoolExecutorsTest {
         BlockingDeque<Runnable> workQueue = new LinkedBlockingDeque<>(2);
 
         // 当线程数大于核心线程数时，多余的空闲线程存活的最长时间
-        long keepAliveTime = 5;
+        long keepAliveTime = 5L;
         // 时间单位
         TimeUnit unit = TimeUnit.SECONDS;
-        // 线程工厂，用来创建线程，一般默认即可
         AtomicInteger atomicInteger = new AtomicInteger(1);
+        // 线程工厂，用来创建线程，一般默认即可
         ThreadFactory threadFactory = new ThreadFactory() {
             @Override
             public Thread newThread(Runnable r) {
+                // 自定义线程池名称
                 return new Thread(r, "test-" + atomicInteger.getAndIncrement());
             }
         };
@@ -54,10 +57,14 @@ public class ThreadPoolExecutorsTest {
                 handler
         );
 
+        printThreadPoolStatus(threadPoolExecutor);
+
         final int taskCount = 7;
         CountDownLatch countDownLatch = new CountDownLatch(taskCount);
 
         for (int i = 0; i < 10; i++) {
+            // Future 异步调用
+            // threadPoolExecutor.submit(() -> {
             threadPoolExecutor.execute(() -> {
                 try {
                     System.out.println(Thread.currentThread().getName());
@@ -83,5 +90,28 @@ public class ThreadPoolExecutorsTest {
         private void doLog(Runnable r) {
             System.err.println(r.toString() + " rejected");
         }
+    }
+
+    /**
+     * 监测线程池运行状态
+     *
+     * @param threadPoolExecutor
+     */
+    private static void printThreadPoolStatus(ThreadPoolExecutor threadPoolExecutor) {
+        ScheduledThreadPoolExecutor scheduledThreadPoolExecutor = new ScheduledThreadPoolExecutor(1, new ThreadFactory() {
+            @Override
+            public Thread newThread(Runnable r) {
+                return new Thread(r, "print-images/thread-pool-status");
+            }
+        });
+        scheduledThreadPoolExecutor.scheduleAtFixedRate(() -> {
+            System.out.println("=========================");
+            System.out.println(Thread.currentThread().getName());
+            System.out.println("ThreadPool Size: [" + threadPoolExecutor.getPoolSize() + "]");
+            System.out.println("Active Threads: " + threadPoolExecutor.getActiveCount());
+            System.out.println("Number of Tasks : " + threadPoolExecutor.getCompletedTaskCount());
+            System.out.println("Number of Tasks in Queue: " + threadPoolExecutor.getQueue().size());
+            System.out.println("=========================");
+        }, 0, 1, TimeUnit.SECONDS);
     }
 }
