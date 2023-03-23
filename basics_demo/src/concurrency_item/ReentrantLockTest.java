@@ -1,4 +1,4 @@
-package concurrency;
+package concurrency_item;
 
 /**
  * 可重入且独占式的锁

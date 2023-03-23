@@ -1,4 +1,4 @@
-package concurrency;
+package concurrency_item;
 
 import java.lang.management.ManagementFactory;
 import java.lang.management.ThreadInfo;

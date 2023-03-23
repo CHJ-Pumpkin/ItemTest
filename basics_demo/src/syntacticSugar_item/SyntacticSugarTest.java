@@ -1,4 +1,4 @@
-package syntacticSugar;
+package syntacticSugar_item;
 
 import java.util.List;
 
