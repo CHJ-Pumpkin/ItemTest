@@ -1,4 +1,4 @@
-package concurrency;
+package concurrency_item;
 
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicIntegerArray;

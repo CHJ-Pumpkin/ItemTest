@@ -1,4 +1,4 @@
-package concurrency;
+package concurrency_item;
 
 /**
  * 双重校验锁实现对象单例(线程安全)

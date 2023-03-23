@@ -1,4 +1,4 @@
-package concurrency;
+package concurrency_item;
 
 /**
  * 死锁
